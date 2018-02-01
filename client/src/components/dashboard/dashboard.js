@@ -14,12 +14,14 @@ class Dashboard extends Component {
 
   isRole(roleToCheck, toRender) {
     const userRole = cookie.load('user').role;
-
     if (userRole === roleToCheck) {
       return toRender;
     }
-
     return false;
+  }
+
+  getUserInfo(){
+    return cookie.load('user');
   }
 
   adminMenu() {
@@ -49,6 +51,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
+        <span>{this.getUserInfo().firstName}</span>
         <Link to="/dashboard/inbox">Inbox</Link> | <Link to="/profile/edit">Edit Profile</Link> | <Link to="/billing/settings">Billing</Link>
         {this.isRole('Admin', this.adminMenu())}
         {this.isRole('Owner', this.ownerMenu())}
