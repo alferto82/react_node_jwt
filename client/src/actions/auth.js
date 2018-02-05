@@ -11,7 +11,6 @@ import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASS
 // TO-DO: Add expiration to cookie
 export function loginUser({ email, password }) {
   return function (dispatch) {
-    console.log(email, password, `${API_URL}/auth/login`);
     axios.post(`${API_URL}/auth/login`, { email, password })
     .then((response) => {
       console.log(response);

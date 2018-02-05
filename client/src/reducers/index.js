@@ -2,13 +2,17 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import authReducer from './auth_reducer';
 import userReducer from './user_reducer';
+import localesReducer from './locales_reducer';
+import { intlReducer } from 'react-intl-redux';
 //import communicationReducer from './communication_reducer';
 //import customerReducer from './customer_reducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
-  user: userReducer
+  user: userReducer,
+  intl: intlReducer,
+  locales: localesReducer
 //  communication: communicationReducer,
 //  customer: customerReducer,
 });

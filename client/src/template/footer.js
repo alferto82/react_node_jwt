@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 
 class FooterTemplate extends Component {
   renderLinks() {
@@ -47,6 +48,7 @@ class FooterTemplate extends Component {
                 </ul>
               </nav>
               <p className="copyright">© {year}, Bicinetica. All Rights Reserved.</p>
+              <FormattedMessage id="app.greeting" defaultMessage="Hello!" />
             </div>
           </div>
         </div>

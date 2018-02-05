@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import SwitchLocale from '../components/locales/switchLocale';
+import { FormattedMessage } from 'react-intl';
 
 class HeaderTemplate extends Component {
   renderLinks() {
@@ -8,6 +10,7 @@ class HeaderTemplate extends Component {
       return [
         <li key={`${1}header`}>
           <Link to="/">Home</Link>
+          <FormattedMessage id="app.greeting" defaultMessage="Hello!" />
         </li>,
         <li key={`${2}header`}>
           <Link to="dashboard">Dashboard</Link>
@@ -32,9 +35,11 @@ class HeaderTemplate extends Component {
     }
   }
 
+
   render() {
     return (
       <div>
+        <SwitchLocale />
         <nav className="navbar navbar-default navbar-fixed-top">
           <div className="container">
             <div className="navbar-header">

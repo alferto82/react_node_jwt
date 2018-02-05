@@ -20,3 +20,8 @@ export const FETCH_USER = 'fetch_user',
 //= =====================
 export const SEND_CONTACT_FORM = 'send_contact_form',
   STATIC_ERROR = 'static_error';
+
+//= =====================
+// Locale Update
+//= =====================
+export const UPDATE_LOCALES = 'UPDATE_LOCALES';
