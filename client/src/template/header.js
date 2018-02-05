@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { getTranslate, getActiveLanguage } from 'react-localize-redux';
 
 class HeaderTemplate extends Component {
+
+
   renderLinks() {
+    const {translate} = this.props; 
+
     if (this.props.authenticated) {
       return [
         <li key={`${1}header`}>
-          <Link to="/">Home</Link>
+          <Link to="/">Home { translate('title')}</Link>
         </li>,
         <li key={`${2}header`}>
           <Link to="dashboard">Dashboard</Link>
@@ -61,6 +66,8 @@ class HeaderTemplate extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
+    translate: getTranslate(state.locale),
+    currentLanguage: getActiveLanguage(state.locale).code
   };
 }
 
