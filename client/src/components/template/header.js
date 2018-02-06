@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getTranslate, getActiveLanguage } from 'react-localize-redux';
-import SwitchLocale  from '../components/locale/switchLocale';
+import SwitchLocale  from '../locale/switchLocale';
+import TranslatedComponent from '../commons/TranslatedComponent';
 
 class HeaderTemplate extends Component {
 
@@ -13,26 +13,26 @@ class HeaderTemplate extends Component {
     if (this.props.authenticated) {
       return [
         <li key={`${1}header`}>
-          <Link to="/">Home { translate('title')}</Link>
+          <Link to="/">{ translate('header.home')}</Link>
         </li>,
         <li key={`${2}header`}>
-          <Link to="dashboard">Dashboard</Link>
+          <Link to="dashboard">{ translate('header.dashboard')}</Link>
         </li>,
         <li key={`${3}header`}>
-          <Link to="logout">Logout</Link>
+          <Link to="logout">{ translate('header.logout')}</Link>
         </li>,
       ];
     } else {
       return [
         // Unauthenticated navigation
         <li key={1}>
-          <Link to="/">Home</Link>
+          <Link to="/">{ translate('header.home')}</Link>
         </li>,
         <li key={2}>
-          <Link to="login">Login</Link>
+          <Link to="login">{ translate('header.login')}</Link>
         </li>,
         <li key={3}>
-          <Link to="register">Register</Link>
+          <Link to="register">{ translate('header.register')}</Link>
         </li>,
       ];
     }
@@ -67,10 +67,8 @@ class HeaderTemplate extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated,
-    translate: getTranslate(state.locale),
-    currentLanguage: getActiveLanguage(state.locale).code
+    authenticated: state.auth.authenticated
   };
 }
 
-export default connect(mapStateToProps)(HeaderTemplate);
+export default connect(mapStateToProps)(TranslatedComponent(HeaderTemplate));

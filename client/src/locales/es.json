@@ -1,4 +1,12 @@
 {
-    "title": "My_ES",
-    "description": "_ESSDsd"
+  "header": {
+    "home": "Inicio",
+    "dashboard": "Dashboard",
+    "login": "Iniciar sesión",
+    "logout": "Desconectar",
+    "register": "Registrar"
+  },
+  "notFound": {
+    "message": "Lo siento, ¡la página que estas buscando no puede ser encontrada!"
+    }
   }

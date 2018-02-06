@@ -20,6 +20,7 @@ class SwitchLocale extends Component {
             
           }
       >
+      {console.log(this.props)}
       <option key='en'>en</option>
       <option key='es'>es</option>
       </select>
