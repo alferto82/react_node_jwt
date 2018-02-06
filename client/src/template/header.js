@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { getTranslate, getActiveLanguage } from 'react-localize-redux';
+import SwitchLocale  from '../components/locale/switchLocale';
 
 class HeaderTemplate extends Component {
 
@@ -40,6 +41,7 @@ class HeaderTemplate extends Component {
   render() {
     return (
       <div>
+        <SwitchLocale />
         <nav className="navbar navbar-default navbar-fixed-top">
           <div className="container">
             <div className="navbar-header">

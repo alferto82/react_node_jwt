@@ -1,54 +1,34 @@
 import React, { Component } from 'react';
+import cookie from 'react-cookie';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router';
-import { loginUser } from '../../actions/auth';
+import { loadLocales, changeLocale } from '../../actions/locale'
 
-const form = reduxForm({
-  form: 'login',
-});
 
-class Login extends Component {
-  handleFormSubmit(formProps) {
-    this.props.loginUser(formProps);
-  }
 
-  renderAlert() {
-    if (this.props.errorMessage) {
-      return (
-        <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
-        </div>
-      );
-    }
+class SwitchLocale extends Component {
+  componentWillMount(){
+   // this.props.loadLocales();
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { changeLocale } = this.props;
 
     return (
-      <select
-        value={currentLocale}
-        onChange={e =>
-          store.dispatch(
-            updateIntl({
-              locale: e.target.value,
-              messages: locales[e.target.value],
-            })
-          )}
+        <select
+        onChange={ e=>
+          changeLocale({locale: e.target.value})
+            
+          }
       >
-        {Object.keys(locales).map(locale => <option key={locale}>{locale}</option>)}
+      <option key='en'>en</option>
+      <option key='es'>es</option>
       </select>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {
-    errorMessage: state.auth.error,
-    message: state.auth.message,
-    authenticated: state.auth.authenticated,
-  };
+  return { authenticated: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps, { loginUser })(form(Login));
+export default connect(mapStateToProps, { loadLocales, changeLocale })(SwitchLocale);
