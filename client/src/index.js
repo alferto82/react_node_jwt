@@ -9,10 +9,15 @@ import cookie from 'react-cookie';
 import registerServiceWorker from './registerServiceWorker';
 import reduxThunk from 'redux-thunk';
 import ReactGA from 'react-ga';
-import { AUTH_USER } from './actions/types';
+import { AUTH_USER, LOAD_LOCALES } from './actions/types';
 
 
 import './styles/css/base.css';
+
+
+import { addTranslationForLanguage } from 'react-localize-redux';
+import { initialize } from 'react-localize-redux';
+import { loadLocales } from './actions/locale';
 
 // Initialize Google Analytics
 ReactGA.initialize('UA-000000-01');
@@ -25,6 +30,24 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 const token = cookie.load('token');
+
+
+////////
+const languages = [
+  { name: 'English', code: 'en' },
+  { name: 'French', code: 'fr' },
+  { name: 'Spanish', code: 'es' }
+];
+store.dispatch(initialize(languages, {defaultLanguage: 'en'}));
+const json_en = require('./locales/en.json');
+const json_es = require('./locales/es.json');
+store.dispatch(addTranslationForLanguage(json_en, 'en'));
+store.dispatch(addTranslationForLanguage(json_es, 'es'));
+///////
+
+
+
+
 
 if (token) {
   // Update application state. User has token and is probably authenticated

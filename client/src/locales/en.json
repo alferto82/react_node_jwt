@@ -1,0 +1,12 @@
+{
+    "header": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "login": "Login",
+      "logout": "Logout",
+      "register": "Register"
+    },
+    "notFound": {
+        "message": "I'm sorry, the page you were looking for cannot be found!"
+    }
+  }
