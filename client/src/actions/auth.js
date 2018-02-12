@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import cookie from 'react-cookie';
-import { API_URL, CLIENT_ROOT_URL, errorHandler } from './index';
+import {  errorHandler } from './index';
 import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST } from './types';
 
+import {config } from '../config';
 //= ===============================
 // Authentication actions
 //= ===============================
@@ -11,14 +12,15 @@ import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASS
 // TO-DO: Add expiration to cookie
 export function loginUser({ email, password }) {
   return function (dispatch) {
-    console.log(email, password, `${API_URL}/auth/login`);
-    axios.post(`${API_URL}/auth/login`, { email, password })
+    console.log(config);
+    axios.post(config.api.API_URL_LOGIN, { email, password })
     .then((response) => {
       console.log(response);
       cookie.save('token', response.data.token, { path: '/' });
       cookie.save('user', response.data.user, { path: '/' });
-      dispatch({ type: AUTH_USER });
-      window.location.href = `${CLIENT_ROOT_URL}/dashboard`;
+      localStorage.setItem('language', response.data.user.language);
+      dispatch({ type: AUTH_USER , userInfo: response.data.user});
+      window.location.href = config.CLIENT_ROOT_URL + '/dashboard';
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, AUTH_ERROR);
@@ -28,12 +30,14 @@ export function loginUser({ email, password }) {
 
 export function registerUser({ email, firstName, lastName, password }) {
   return function (dispatch) {
-    axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
+    axios.post(config.api.API_URL_REGISTER, { email, firstName, lastName, password })
     .then((response) => {
       cookie.save('token', response.data.token, { path: '/' });
       cookie.save('user', response.data.user, { path: '/' });
+      console.log('response.data.user');
+      localStorage.setItem('language', response.data.user.language);
       dispatch({ type: AUTH_USER });
-      window.location.href = `${CLIENT_ROOT_URL}/dashboard`;
+      window.location.href = `${config.CLIENT_ROOT_URL}/dashboard`;
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, AUTH_ERROR);
@@ -47,13 +51,14 @@ export function logoutUser(error) {
     cookie.remove('token', { path: '/' });
     cookie.remove('user', { path: '/' });
 
-    window.location.href = `${CLIENT_ROOT_URL}/login`;
+    window.location.href = config.CLIENT_ROOT_URL_LOGIN;
   };
 }
 
 export function getForgotPasswordToken({ email }) {
   return function (dispatch) {
-    axios.post(`${API_URL}/auth/forgot-password`, { email })
+    console.log(config);
+    axios.post(config.api.API_URL_FORGOT_PASSWORD, { email })
     .then((response) => {
       dispatch({
         type: FORGOT_PASSWORD_REQUEST,
@@ -68,7 +73,7 @@ export function getForgotPasswordToken({ email }) {
 
 export function resetPassword(token, { password }) {
   return function (dispatch) {
-    axios.post(`${API_URL}/auth/reset-password/${token}`, { password })
+    axios.post(config.api.API_URL_RESET_PASSWORD + '/' + `${token}`, { password })
     .then((response) => {
       dispatch({
         type: RESET_PASSWORD_REQUEST,
@@ -85,7 +90,7 @@ export function resetPassword(token, { password }) {
 
 export function protectedTest() {
   return function (dispatch) {
-    axios.get(`${API_URL}/protected`, {
+    axios.get(config.api.API_URL_PROTECTED, {
       headers: { Authorization: cookie.load('token') },
     })
     .then((response) => {

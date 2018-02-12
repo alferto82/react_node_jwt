@@ -14,7 +14,6 @@ export const AUTH_USER = 'auth_user',
 export const FETCH_USER = 'fetch_user',
   ERROR_RESPONSE = 'error_response';
   
-
 //= =====================
 // Page Actions
 //= =====================

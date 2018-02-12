@@ -24,7 +24,8 @@ const UserSchema = new Schema({
   },
   profile: {
     firstName: { type: String },
-    lastName: { type: String }
+    lastName: { type: String },
+    language: {type: String, default: 'en'}
   },
   role: {
     type: String,

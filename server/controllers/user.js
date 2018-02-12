@@ -16,6 +16,7 @@ exports.viewProfile = function (req, res, next) {
 
     const userToReturn = setUserInfo(user);
 
+  
     return res.status(200).json({ user: userToReturn });
   });
 };

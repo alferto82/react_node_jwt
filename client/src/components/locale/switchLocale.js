@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
-import cookie from 'react-cookie';
 import { connect } from 'react-redux';
 import { loadLocales, changeLocale } from '../../actions/locale'
-
-
+import TranslatedComponent from '../commons/TranslatedComponent';
 
 class SwitchLocale extends Component {
   componentWillMount(){
    // this.props.loadLocales();
+   this.state = {currentLocale: Object.values(this.props.locales).filter(locale => locale.active === true).code}
   }
 
   render() {
     const { changeLocale } = this.props;
 
     return (
-        <select
+      
+        <select className="selectpicker" value={this.props.currentLanguage} data-width="fit"
         onChange={ e=>
           changeLocale({locale: e.target.value})
-            
           }
       >
-      {console.log(this.props)}
-      <option key='en'>en</option>
-      <option key='es'>es</option>
+      {Object.values(this.props.locales).map(locale => <option key={locale.code}>{locale.code}</option>) }
       </select>
     );
   }
@@ -32,4 +29,4 @@ function mapStateToProps(state) {
   return { authenticated: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps, { loadLocales, changeLocale })(SwitchLocale);
+export default connect(mapStateToProps, { loadLocales, changeLocale })(TranslatedComponent(SwitchLocale));

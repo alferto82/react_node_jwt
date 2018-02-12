@@ -27,7 +27,7 @@ class Login extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <div>
+      <div className="loginDiv">
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           {this.renderAlert()}
           <div>

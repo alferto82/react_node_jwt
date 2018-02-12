@@ -8,7 +8,7 @@ class NotFoundPage extends Component {
     
     return (
       <div>
-        <h1>404 - Page Not Found</h1>
+        <h1>{ translate('notFound.404') }</h1>
         <p>{ translate('notFound.message') }</p>
       </div>
     );

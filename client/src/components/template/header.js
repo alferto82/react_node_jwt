@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import SwitchLocale  from '../locale/switchLocale';
 import TranslatedComponent from '../commons/TranslatedComponent';
-
+import SwitchLocale  from '../locale/switchLocale';
 class HeaderTemplate extends Component {
 
 
@@ -40,9 +39,9 @@ class HeaderTemplate extends Component {
 
   render() {
     return (
-      <div>
-        <SwitchLocale />
+      <div> 
         <nav className="navbar navbar-default navbar-fixed-top">
+        
           <div className="container">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-collapse">
@@ -51,11 +50,15 @@ class HeaderTemplate extends Component {
                 <span className="icon-bar" />
               </button>
               <Link className="navbar-brand" to="/">{this.props.logo}</Link>
+              
             </div>
 
             <div className="collapse navbar-collapse" id="nav-collapse">
               <ul className="nav navbar-nav navbar-right">
                 {this.renderLinks()}
+                <li>
+                  <SwitchLocale />
+                </li>
               </ul>
             </div>
           </div>

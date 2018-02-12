@@ -7,6 +7,7 @@
       "register": "Register"
     },
     "notFound": {
-        "message": "I'm sorry, the page you were looking for cannot be found!"
+      "404": "404 - Page Not Found",
+      "message": "I'm sorry, the page you were looking for cannot be found!"
     }
   }
