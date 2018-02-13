@@ -36,7 +36,7 @@ export function registerUser({ email, firstName, lastName, password }) {
       cookie.save('user', response.data.user, { path: '/' });
       console.log('response.data.user');
       localStorage.setItem('language', response.data.user.language);
-      dispatch({ type: AUTH_USER });
+      dispatch({ type: AUTH_USER , userInfo: response.data.user});
       window.location.href = `${config.CLIENT_ROOT_URL}/dashboard`;
     })
     .catch((error) => {
@@ -73,7 +73,7 @@ export function getForgotPasswordToken({ email }) {
 
 export function resetPassword(token, { password }) {
   return function (dispatch) {
-    axios.post(config.api.API_URL_RESET_PASSWORD + '/' + `${token}`, { password })
+    axios.post(config.api.API_URL_RESET_PASSWORD + '/' + token, { password })
     .then((response) => {
       dispatch({
         type: RESET_PASSWORD_REQUEST,

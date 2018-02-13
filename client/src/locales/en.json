@@ -6,6 +6,9 @@
       "logout": "Logout",
       "register": "Register"
     },
+    "home": {
+      "msg": "Home page"
+    },
     "notFound": {
       "404": "404 - Page Not Found",
       "message": "I'm sorry, the page you were looking for cannot be found!"

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import TranslatedComponent from '../commons/TranslatedComponent';
 import SwitchLocale  from '../locale/switchLocale';
+
 class HeaderTemplate extends Component {
 
 

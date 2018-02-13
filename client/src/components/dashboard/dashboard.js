@@ -20,10 +20,6 @@ class Dashboard extends Component {
     return false;
   }
 
-  getUserInfo(userInfo){
-    return cookie.load('user');
-  }
-
   adminMenu() {
     return (
       <div className="admin-menu">
@@ -53,7 +49,8 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <span>{userInfo.firstName}</span>
+        <span>Nombre: {userInfo.firstName}</span>
+        <br/>
         <Link to="/dashboard/inbox">Inbox</Link> | <Link to="/profile/edit">Edit Profile</Link> | <Link to="/billing/settings">Billing</Link>
         {this.isRole('Admin', this.adminMenu())}
         {this.isRole('Owner', this.ownerMenu())}
@@ -65,7 +62,7 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
-  return { content: state.auth.content , userInfo: state.user};
+  return { content: state.auth.content };
 }
 
 export default connect(mapStateToProps, { protectedTest })(Dashboard);

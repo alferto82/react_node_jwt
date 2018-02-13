@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import TranslatedComponent from '../commons/TranslatedComponent';
 
 class HomePage extends Component {
   render() {
+    const {translate} = this.props; 
+    
     return (
-      <div>Hello world! This is the home page route.</div>
+      <h1>{ translate('home.msg')}</h1>
     );
   }
 }
 
-export default HomePage;
+export default TranslatedComponent(HomePage);

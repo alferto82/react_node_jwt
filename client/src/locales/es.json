@@ -6,6 +6,9 @@
     "logout": "Desconectar",
     "register": "Registrar"
   },
+  "home": {
+      "msg": "Página inicial"
+  },
   "notFound": {
     "404": "404 - Página no encontrada",
     "message": "Lo siento, ¡la página que estas buscando no puede ser encontrada!"

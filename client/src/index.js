@@ -30,8 +30,12 @@ const token = cookie.load('token');
 loadLocales(store);
 
 if (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    let payload =  JSON.parse(window.atob(base64));
+
   // Update application state. User has token and is probably authenticated
-  store.dispatch({ type: AUTH_USER });
+  store.dispatch({ type: AUTH_USER , userInfo: payload});
 }
 
 ReactDOM.render(
