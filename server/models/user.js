@@ -18,13 +18,19 @@ const UserSchema = new Schema({
     unique: true,
     required: true
   },
+  username: {
+    type: String,
+    lowercase: true,
+    unique: true,
+    required: true
+  },
   password: {
     type: String,
     required: true
   },
   profile: {
-    firstName: { type: String },
-    lastName: { type: String },
+    name: { type: String },
+    surname: { type: String },
     language: {type: String, default: 'en'}
   },
   role: {
@@ -42,9 +48,9 @@ const UserSchema = new Schema({
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }
 },
-  {
-    timestamps: true
-  });
+{
+  timestamps: true
+});
 
 //= ===============================
 // User ORM Methods

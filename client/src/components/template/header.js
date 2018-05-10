@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import TranslatedComponent from '../commons/TranslatedComponent';
 import SwitchLocale  from '../locale/switchLocale';
+import { logoutUser } from '../../actions/users';
 
 class HeaderTemplate extends Component {
 
 
-  renderLinks() {
+  renderLinks(authenticatedUser) {
     const {translate} = this.props; 
 
-    if (this.props.authenticated) {
+    if (authenticatedUser) {
       return [
         <li key={`${1}header`}>
           <Link to="/">{ translate('header.home')}</Link>
@@ -19,7 +20,9 @@ class HeaderTemplate extends Component {
           <Link to="dashboard">{ translate('header.dashboard')}</Link>
         </li>,
         <li key={`${3}header`}>
-          <Link to="logout">{ translate('header.logout')}</Link>
+          <a onClick={this.props.logout} href="javascript:void(0)">
+          { translate('header.logout')}
+          </a>
         </li>,
       ];
     } else {
@@ -33,12 +36,13 @@ class HeaderTemplate extends Component {
         </li>,
         <li key={3}>
           <Link to="register">{ translate('header.register')}</Link>
-        </li>,
+        </li>
       ];
     }
   }
 
   render() {
+    const { authenticatedUser } = this.props;
     return (
       <div> 
         <nav className="navbar navbar-default navbar-fixed-top">
@@ -56,7 +60,7 @@ class HeaderTemplate extends Component {
 
             <div className="collapse navbar-collapse" id="nav-collapse">
               <ul className="nav navbar-nav navbar-right">
-                {this.renderLinks()}
+                {this.renderLinks(authenticatedUser)}
                 <li>
                   <SwitchLocale />
                 </li>
@@ -70,9 +74,19 @@ class HeaderTemplate extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    authenticated: state.auth.authenticated
+  return { 
+    authenticatedUser: state.user.status === 'authenticated' ? state.user.user : null,
+    user: state.user
   };
 }
 
-export default connect(mapStateToProps)(TranslatedComponent(HeaderTemplate));
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+     logout: () => {
+         sessionStorage.removeItem('jwtToken');
+         dispatch(logoutUser());
+     }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TranslatedComponent(HeaderTemplate));

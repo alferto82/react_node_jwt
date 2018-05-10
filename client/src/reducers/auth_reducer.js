@@ -4,7 +4,6 @@ import initialState from './initialState';
 export default function (state = initialState, action) {
   switch (action.type) {
     case AUTH_USER:
-    console.log(state, action);
       return { ...state, error: '', message: '', authenticated: true , userInfo: action.userInfo};
     case UNAUTH_USER:
       return { ...state, authenticated: false, error: action.payload };
@@ -15,7 +14,6 @@ export default function (state = initialState, action) {
     case RESET_PASSWORD_REQUEST:
       return { ...state, message: action.payload.message };
     case PROTECTED_TEST:
-      console.log(state, action);
       return { ...state, content: action.payload.message };
     default:
       return state;

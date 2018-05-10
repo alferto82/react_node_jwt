@@ -5,7 +5,6 @@ import TranslatedComponent from '../commons/TranslatedComponent';
 
 class SwitchLocale extends Component {
   componentWillMount(){
-   // this.props.loadLocales();
    this.state = {currentLocale: Object.values(this.props.locales).filter(locale => locale.active === true).code}
   }
 

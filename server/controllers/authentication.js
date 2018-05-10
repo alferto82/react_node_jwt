@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/user');
-const mailgun = require('../config/mailgun');
-// const mailchimp = require('../config/mailchimp');
 const setUserInfo = require('../helpers').setUserInfo;
 const getRole = require('../helpers').getRole;
 const config = require('../config/main');
-
+const bcrypt = require('bcrypt-nodejs');
+const utils = require('../utils/index')
 // Generate JWT
 // TO-DO Add issuer and audience
 function generateToken(user) {
@@ -19,12 +18,46 @@ function generateToken(user) {
 // Login Route
 //= =======================================
 exports.login = function (req, res, next) {
-  const userInfo = setUserInfo(req.user);
+  
+User
+    .findOne({
+      username: req.body.username
+    })
+    .select({
+      __v: 0,
+      updatedAt: 0,
+      createdAt: 0
+    }) //make sure to not return password (although it is hashed using bcrypt)
+    .exec(function(err, user) {
+      if (err)
+        throw err;
+      if (!user) {
+        return res.json({
+          error: true,
+          message: 'Username is not valid'
+        });
+      }
 
-  res.status(200).json({
-    token: `JWT ${generateToken(userInfo)}`,
-    user: userInfo
-  });
+
+      bcrypt.compare(req.body.password, user.password, function(err, valid) {
+        if (!valid) {
+          return res.json({
+            error: true,
+            message: 'Password is Wrong'
+          });
+        }
+
+        //make sure to NOT pass password and anything sensitive inside token
+        //Pass anything tht might be used in other parts of the app
+        
+        var token = utils.generateToken(user);
+        user = utils.getCleanUser(user);
+        res.json({
+          user: user,
+          token: token
+        });
+      });
+    });  
 };
 
 
@@ -34,8 +67,9 @@ exports.login = function (req, res, next) {
 exports.register = function (req, res, next) {
   // Check for registration errors
   const email = req.body.email;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
+  const name = req.body.name;
+  const username = req.body.username;
+  const surname = req.body.surname;
   const password = req.body.password;
 
   // Return error if no email provided
@@ -44,8 +78,13 @@ exports.register = function (req, res, next) {
   }
 
   // Return error if full name not provided
-  if (!firstName || !lastName) {
+  if (!name || !surname) {
     return res.status(422).send({ error: 'You must enter your full name.' });
+  }
+
+  // Return error if full username not provided
+  if (!username) {
+    return res.status(422).send({ error: 'You must enter your username' });
   }
 
   // Return error if no password provided
@@ -63,9 +102,10 @@ exports.register = function (req, res, next) {
 
       // If email is unique and password was provided, create account
     const user = new User({
+      username,
       email,
       password,
-      profile: { firstName, lastName }
+      profile: { name, surname }
     });
 
     user.save((err, user) => {
@@ -148,13 +188,61 @@ exports.forgotPassword = function (req, res, next) {
         };
 
           // Otherwise, send user email via Mailgun
-        mailgun.sendEmail(existingUser.email, message);
+        //mailgun.sendEmail(existingUser.email, message);
 
-        return res.status(200).json({ message: 'Please check your email for the link to reset your password.' });
+        return res.status(200).json({ message: 'Please check your email for the link to reset your password.', temp: message.text});
       });
     });
   });
 };
+
+exports.validateUser = function(req, res, next){
+  var body = req.body;
+
+  //return res.json({validated: true});
+  isUserUnique(body, function(err) {
+    if (err) {
+      return res.json(err);
+    } else {
+      return res.json({});
+    }
+  });
+  //return res.status(200).json({ data: 'Validated' });
+};
+
+//utility func
+function isUserUnique(reqBody, cb) {
+  var username = reqBody.username ? reqBody.username.trim() : '';
+  var email = reqBody.email ? reqBody.email.trim() : '';
+
+  User.findOne({
+    $or: [{
+      'username': new RegExp(["^", username, "$"].join(""), "i")
+    }, {
+      'email': new RegExp(["^", email, "$"].join(""), "i")
+    }]
+  }, function(err, user) {
+    if (err)
+      throw err;
+
+    if (!user) {
+      cb();
+      return;
+    }
+
+    var err;
+    if (user.username === username) {
+      err = {};
+      err.username = '"' + username + '" is not unique';
+    }
+    if (user.email === email) {
+      err = err ? err : {};
+      err.email = '"' + email + '" is not unique';
+    }
+
+    cb(err);
+  });
+}
 
 //= =======================================
 // Reset Password Route
@@ -183,9 +271,49 @@ exports.verifyToken = function (req, res, next) {
       };
 
         // Otherwise, send user email confirmation of password change via Mailgun
-      mailgun.sendEmail(resetUser.email, message);
+      //mailgun.sendEmail(resetUser.email, message);
 
       return res.status(200).json({ message: 'Password changed successfully. Please login with your new password.' });
+    });
+  });
+};
+
+
+exports.meFromToken = function(req, res, next) {
+  console.log("meFromToken....................");
+  // check header or url parameters or post parameters for token
+ // var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  var token = req.body.token || req.query.token || req.headers['authorization'];
+  if (!token) {
+    return res.status(401).json({
+      message: 'Must pass token'
+    });
+  }
+
+  var access_token = token.replace('JWT ',''); 
+
+  // decode token
+  jwt.verify(access_token, config.secret, function(err, user) {
+    if (err)
+      throw err;
+
+    //return user using the id from w/in JWTToken
+    User.findById({
+      '_id': user._id
+    }, function(err, user) {
+      if (err)
+        throw err;
+
+      user = utils.getCleanUser(user); //dont pass password and stuff
+
+      //note: you can renew token by creating new token(i.e. refresh it) w/ new expiration time at this point, but I'm passing the old token back.
+      // var token = utils.generateToken(user);
+
+      res.json({
+        user: user,
+        token: access_token
+      });
+
     });
   });
 };

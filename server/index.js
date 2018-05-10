@@ -1,15 +1,16 @@
 // Importing Node modules and initializing Express
 const express = require('express'),
+  displayRoutes = require('express-routemap'),
   app = express(),
   bodyParser = require('body-parser'),
   logger = require('morgan'),
   router = require('./router'),
   mongoose = require('mongoose'),
-  socketEvents = require('./socketEvents'),
   config = require('./config/main');
-
+  
 // Database Setup
-mongoose.connect(config.database);
+mongoose.connect(config.databaseUrl, config.databaseAuth);
+
 
 // Start the server
 let server;
@@ -21,15 +22,11 @@ if (process.env.NODE_ENV != config.test_env) {
 }
 
 
-const io = require('socket.io').listen(server);
-
-socketEvents(io);
-
 // Set static file location for production
 // app.use(express.static(__dirname + '/public'));
 
 // Setting up basic middleware for all Express requests
-app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
+app.use(bodyParser.urlencoded({extended: true})); // Parses urlencoded bodies
 app.use(bodyParser.json()); // Send JSON responses
 app.use(logger('dev')); // Log requests to API using morgan
 
@@ -44,6 +41,7 @@ app.use((req, res, next) => {
 
 // Import routes to be served
 router(app);
+displayRoutes(app);
 
 // necessary for testing
 module.exports = server;

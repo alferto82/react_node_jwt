@@ -15,7 +15,7 @@ import { loadLocales } from './actions/locale';
 import { config } from './config';
 
 // Initialize Google Analytics
-ReactGA.initialize(config.analytics.google.trackingId);
+//ReactGA.initialize(config.analytics.google.trackingId);
 
 function logPageView() {
   ReactGA.pageview(window.location.pathname);

@@ -9,6 +9,12 @@
   "home": {
       "msg": "Página inicial"
   },
+  "dashboard":{
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo",
+      "role": "Rol"
+    },
   "notFound": {
     "404": "404 - Página no encontrada",
     "message": "Lo siento, ¡la página que estas buscando no puede ser encontrada!"

@@ -9,55 +9,23 @@ import {config } from '../config';
 // Authentication actions
 //= ===============================
 
-// TO-DO: Add expiration to cookie
-export function loginUser({ email, password }) {
-  return function (dispatch) {
-    console.log(config);
-    axios.post(config.api.API_URL_LOGIN, { email, password })
-    .then((response) => {
-      console.log(response);
-      cookie.save('token', response.data.token, { path: '/' });
-      cookie.save('user', response.data.user, { path: '/' });
-      localStorage.setItem('language', response.data.user.language);
-      dispatch({ type: AUTH_USER , userInfo: response.data.user});
-      window.location.href = config.CLIENT_ROOT_URL + '/dashboard';
-    })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR);
-    });
-  };
-}
 
-export function registerUser({ email, firstName, lastName, password }) {
-  return function (dispatch) {
-    axios.post(config.api.API_URL_REGISTER, { email, firstName, lastName, password })
-    .then((response) => {
-      cookie.save('token', response.data.token, { path: '/' });
-      cookie.save('user', response.data.user, { path: '/' });
-      console.log('response.data.user');
-      localStorage.setItem('language', response.data.user.language);
-      dispatch({ type: AUTH_USER , userInfo: response.data.user});
-      window.location.href = `${config.CLIENT_ROOT_URL}/dashboard`;
-    })
-    .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR);
-    });
-  };
-}
 
 export function logoutUser(error) {
   return function (dispatch) {
     dispatch({ type: UNAUTH_USER, payload: error || '' });
     cookie.remove('token', { path: '/' });
-    cookie.remove('user', { path: '/' });
+    //cookie.remove('user', { path: '/' });
 
-    window.location.href = config.CLIENT_ROOT_URL_LOGIN;
+      setTimeout(function () {
+        window.location.href = config.CLIENT_ROOT_URL_LOGIN;
+     }, config.TIME_DELAY_NAVIGATION);
   };
 }
 
 export function getForgotPasswordToken({ email }) {
+  console.log(email,config.api.API_URL_FORGOT_PASSWORD);
   return function (dispatch) {
-    console.log(config);
     axios.post(config.api.API_URL_FORGOT_PASSWORD, { email })
     .then((response) => {
       dispatch({

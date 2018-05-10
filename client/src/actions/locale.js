@@ -20,6 +20,7 @@ export function loadLocales(store) {
 export function changeLocale({ locale }) {
     return function (dispatch) {
         dispatch(setActiveLanguage(locale));
+        sessionStorage.setItem("locale", locale);
     };
   }
 

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import cookie from 'react-cookie';
-import { logoutUser } from './auth';
 import { STATIC_ERROR, FETCH_USER } from './types';
 import { config } from '../config';
 
@@ -11,16 +10,14 @@ import { config } from '../config';
 
 
 export function errorHandler(dispatch, error, type) {
-  console.log('Error type: ', type);
-  console.log(error);
-
   let errorMessage = error.response ? error.response.data : error;
 
    // NOT AUTHENTICATED ERROR
-  if (error.status === 401 || error.response.status === 401) {
+   if (error.status === 401 || (error.response && error.response.status === 401)) {
     errorMessage = 'You are not authorized to do this.';
-    return dispatch(logoutUser(errorMessage));
+    //return dispatch(logoutUser(errorMessage));
   }
+   errorMessage = error.data.error;
 
   dispatch({
     type,

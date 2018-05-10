@@ -1,21 +1,16 @@
-import React, { Component } from 'react';
-import HeaderTemplate from '../components/template/header';
-import FooterTemplate from '../components/template/footer';
+import React from 'react';
+import { Component } from 'react';
 
-class App extends Component {
+export default class App extends Component {
+	componentWillMount() {
+    this.props.loadUserFromToken();
+  }
+
   render() {
     return (
       <div>
-        <HeaderTemplate logo="Bicinetica" />
-
-        <div className="container">
-          {this.props.children}
-        </div>
-
-        <FooterTemplate />
+        {this.props.children}
       </div>
     );
   }
 }
-
-export default App;

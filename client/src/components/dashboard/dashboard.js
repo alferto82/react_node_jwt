@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import cookie from 'react-cookie';
 import { protectedTest } from '../../actions/auth';
+import TranslatedComponent from '../commons/TranslatedComponent';
 
 class Dashboard extends Component {
 
@@ -13,7 +14,9 @@ class Dashboard extends Component {
   }
 
   isRole(roleToCheck, toRender) {
-    const userRole = cookie.load('user').role;
+    const { userInfo } = this.props;
+    const userRole = userInfo.role;
+
     if (userRole === roleToCheck) {
       return toRender;
     }
@@ -45,11 +48,18 @@ class Dashboard extends Component {
   }
 
   render() {
-    const {userInfo} = this.props;
+    const {userInfo, translate} = this.props;
 
     return (
       <div>
-        <span>Nombre: {userInfo.firstName}</span>
+        <h1>Dashboard</h1>
+        <span>{translate('dashboard.name')}: {userInfo.firstName}</span>
+        <br/>
+        <span>{translate('dashboard.lastName')}: {userInfo.lastName}</span>
+        <br/>
+        <span>{translate('dashboard.email')}: {userInfo.email}</span>
+        <br/>
+        <span>{translate('dashboard.role')}: {userInfo.role}</span>
         <br/>
         <Link to="/dashboard/inbox">Inbox</Link> | <Link to="/profile/edit">Edit Profile</Link> | <Link to="/billing/settings">Billing</Link>
         {this.isRole('Admin', this.adminMenu())}
@@ -65,4 +75,4 @@ function mapStateToProps(state) {
   return { content: state.auth.content };
 }
 
-export default connect(mapStateToProps, { protectedTest })(Dashboard);
+export default connect(mapStateToProps, { protectedTest })(TranslatedComponent(Dashboard));
