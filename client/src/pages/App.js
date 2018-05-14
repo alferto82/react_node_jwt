@@ -9,7 +9,7 @@ export default class App extends Component {
   render() {
     return (
     	<AppContainer>
-            <HeaderTemplate logo="Bicinetica" />
+            <HeaderTemplate logo="Kinwatt" />
             <div className="container">
                 {this.props.children}
             </div>

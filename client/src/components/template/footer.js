@@ -9,13 +9,24 @@ class FooterTemplate extends Component {
 
     return (
       <footer>
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <p className="copyright">© {year}, Bicinetica. All Rights Reserved.</p>
-            </div>
-          </div>
-        </div>
+        <ul className="icons">
+          <li>
+            <a href="https://twitter.com/kinwatt_es" className="icon fab fa-twitter" target="_blank"/>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/kinwatt.es" target="_blank" className="icon fab fa-facebook-f"/>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/company/11411462/" target="_blank" className="icon fab fa-linkedin-in"/>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/kinwatt_es/" className="icon fab fa-instagram" target="_blank"/>
+          </li>
+
+        </ul>
+        <ul className="copyright">
+						<li>&copy; Kinwatt. Todos los derechos.</li><li>{year}</li>
+					</ul>
       </footer>
     );
   }

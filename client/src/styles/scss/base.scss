@@ -1,4 +1,13 @@
+@import url("http://fonts.googleapis.com/css?family=Oswald");
+
+@import './common/main';
+
 @import './partials/App';
 @import './partials/Body';
 @import './partials/Footer';
 @import './partials/SwitchLocale';
+@import './common/List';
+@import './common/Box';
+@import './common/Icon';
+
+@import './components/Feature';

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http://www.kinwatt.com:3000/api";
 //const API_URL = "http://localhost:9000/api";
 const CLIENT_ROOT_URL = "http://localhost:5000"
 

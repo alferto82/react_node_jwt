@@ -43,5 +43,3 @@ ReactDOM.render(
     <Router history={browserHistory} routes={routes} onUpdate={logPageView} />
   </Provider>,
   document.querySelector('.wrapper'));
-
- // registerServiceWorker();

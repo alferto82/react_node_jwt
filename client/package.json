@@ -2,8 +2,10 @@
   "name": "bicinetica_clean",
   "version": "0.1.0",
   "main": "index.js",
+  "homepage": "./",
   "dependencies": {
     "axios": "^0.13.1",
+    "classnames": "^2.2.5",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.1.2",
     "react": "~15.2.1",

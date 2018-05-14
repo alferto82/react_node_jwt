@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Features from '../home/Features';
 import TranslatedComponent from '../commons/TranslatedComponent';
 
 class HomePage extends Component {
@@ -6,7 +7,10 @@ class HomePage extends Component {
     const {translate} = this.props; 
     
     return (
-      <h1>{ translate('home.msg')}</h1>
+      <div>
+        <h1>{ translate('home.msg')}</h1>
+        <Features/>
+      </div>
     );
   }
 }

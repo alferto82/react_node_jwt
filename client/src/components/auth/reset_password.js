@@ -84,7 +84,7 @@ class ResetPassword extends Component {
         <fieldset className="form-group">
           <label>Confirm New Password:</label>
           <Field name="passwordConfirm" component={renderField} type="password" />
-          {passwordConfirm.touched && passwordConfirm.error && <div className="error">{passwordConfirm.error}</div>}
+          { this.passwordConfirm.touched && this.passwordConfirm.error && <div className="error">{this.passwordConfirm.error}</div>} 
         </fieldset>
 
         {this.renderAlert()}

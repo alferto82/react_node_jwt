@@ -8,7 +8,7 @@ export function loadLocales(store) {
     { name: 'Spanish', code: 'es' }
   ];
 
-  const language = localStorage.getItem('language');
+  const language = localStorage.getItem('locale');
 
   store.dispatch(initialize(languages, {defaultLanguage: language?language:'en'}));
   const json_en = require('../locales/en.json');
@@ -20,7 +20,7 @@ export function loadLocales(store) {
 export function changeLocale({ locale }) {
     return function (dispatch) {
         dispatch(setActiveLanguage(locale));
-        sessionStorage.setItem("locale", locale);
+        localStorage.setItem("locale", locale);
     };
   }
 
